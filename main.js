@@ -3,34 +3,103 @@ const canvas = document.querySelector("#canvas");
 const btn = document.querySelector('#btn');
 const asciiDiv = document.querySelector('#ascii');
 
-const CANVAS_WIDTH = 300;
 
-canvas.setAttribute('width', CANVAS_WIDTH);
-canvas.setAttribute('height', CANVAS_WIDTH*3/4);
+const configs = [
+  {
+    chain: "@.-+#%*=: ", // contraste alto, o melhor
+    nColors: 10,
+    canvasWidth: 300,
+    fontSize: '5px',
+    lineHeight: '2.75px',
+  }, {
+    chain: " .:-=+*#%@Ñ",
+    nColors: 11,
+    canvasWidth: 300,
+    fontSize: '5px',
+    lineHeight: '2.75px',
+  }, {
+    chain: "Ñ@%#*+=-:. ",
+    nColors: 11,
+    canvasWidth: 300,
+    fontSize: '5px',
+    lineHeight: '2.75px',
+  }, {
+    chain: "@ Ñ.%:#-*=+", // contraste altissimo, não tão bom
+    nColors: 11,
+    canvasWidth: 300,
+    fontSize: '5px',
+    lineHeight: '2.75px',
+  }, {
+    chain: "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~i!lI;:,\"^`'. ",
+    nColors: 68,
+    canvasWidth: 80,
+    fontSize: '18.75px',
+    lineHeight: '10.3125px',
+  }, {
+    chain: " ░▒▓█",
+    nColors: 5,
+    canvasWidth: 300,
+    fontSize: '5px',
+    lineHeight: '2.75px',
+  }, {
+    chain: "▉▊▋▍▎▏",
+    nColors: 6,
+    canvasWidth: 300,
+    fontSize: '2.75px',
+    lineHeight: '2.75px',
+  }, {
+    chain: "▏▎▍▋▊▉",
+    nColors: 6,
+    canvasWidth: 300,
+    fontSize: '2.75px',
+    lineHeight: '2.75px',
+  }, {
+    chain: "▂▃▅▆▇",
+    nColors: 5,
+    canvasWidth: 300,
+    fontSize: '2.75px',
+    lineHeight: '2.75px',
+  }, {
+    chain: "▇▆▅▃▂_",
+    nColors: 6,
+    canvasWidth: 300,
+    fontSize: '2.75px',
+    lineHeight: '2.75px',
+  },
+]
 
-const chars = [
-  "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~i!lI;:,\"^`'. ", // pesado
-  "@%#*+=-:. ",
-  " .:-=+*#%@Ñ",
-  "@.-+#%*=: ", // contraste alto, o melhor
-  "@ %.#:*-+=", // contraste altissimo, não tão bom
-  "▉▊▋▍▎▏",
-  "▏▎▍▋▊▉",
-  "▂▃▅▆▇",
-  "▇▆▅▃▂_",
-  " ░▒▓█",
-];
+let configChoice = configs[0];
 
-let charsChain = "@.-+#%*=: ";
-let nColors = charsChain.length;
+let canvasWidth = configChoice.canvasWidth;
+let charsChain = configChoice.chain;
+let nColors = configChoice.nColors;
 let bkPoints = [];
 
 
 
 // inicia alguns valores iniciais
 function setInitialValues() {
-  calcBreakpoints();
   setSelectOptions();
+  handleConfigChange(0);
+}
+
+function handleConfigChange(i) {
+  configChoice = configs[i];
+
+  canvasWidth = configChoice.canvasWidth;
+  charsChain = configChoice.chain;
+  nColors = configChoice.nColors;
+
+  calcBreakpoints();
+  setStyles();
+}
+
+function setStyles() {
+  const CANVAS_WIDTH = configChoice.canvasWidth;
+  canvas.setAttribute('width', CANVAS_WIDTH);
+  canvas.setAttribute('height', CANVAS_WIDTH*3/4); 
+  document.body.style.fontSize = configChoice.fontSize;
+  document.body.style.lineHeight = configChoice.lineHeight;
 }
 
 async function requestWebcam() {
@@ -101,7 +170,7 @@ function asciiArt(imgData) {
     const char = charsChain[bkPoints.indexOf(grayC)];
     imgStr += char == " " ? "&nbsp" : char;
 
-    if ((i+4) % (CANVAS_WIDTH * 4) == 0)
+    if ((i+4) % (canvasWidth * 4) == 0)
       imgStr += '<br/>';
   }
   return imgStr;

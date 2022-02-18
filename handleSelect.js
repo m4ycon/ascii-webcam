@@ -5,7 +5,7 @@ function setSelectOptions() {
   charsChainSelect.innerHTML = '';
 
   // set values
-  chars.forEach(chain => {
+  configs.forEach(({ chain }) => {
     const option = document.createElement('option');
     option.value = chain;
     option.innerText = chain;
@@ -13,12 +13,11 @@ function setSelectOptions() {
   });
 
   // set initial value
-  charsChainSelect.value = charsChain;
+  charsChainSelect.value = configChoice.chain;
 }
 
-function handleOnSelectChange() {
-  charsChain = charsChainSelect.value;
-  nColors = charsChain.length;
-  setInitialValues();
+function handleOnSelectChange(e) {
+  configChoiceI = configs.findIndex(({ chain }) => chain === e.target.value);
+  handleConfigChange(configChoiceI);
 }
 charsChainSelect.addEventListener('change', handleOnSelectChange);
