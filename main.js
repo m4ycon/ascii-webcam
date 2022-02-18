@@ -1,6 +1,5 @@
 const video = document.querySelector('#cam');
 const canvas = document.querySelector("#canvas");
-const btn = document.querySelector('#btn');
 const asciiDiv = document.querySelector('#ascii');
 
 
@@ -117,13 +116,6 @@ function calcBreakpoints() {
 
   bkPoints = newBkPoints;
 }
-
-btn.addEventListener('click', () => {
-  const ctx = canvas.getContext('2d');
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const newImgData = grayscaleNColors(imgData);
-  asciiDiv.innerHTML = asciiArt(newImgData);
-});
 
 //
 function grayscaleNColors(imgData) {
