@@ -2,7 +2,6 @@ const video = document.querySelector('#cam');
 const canvas = document.querySelector("#canvas");
 const btn = document.querySelector('#btn');
 const asciiDiv = document.querySelector('#ascii');
-const charsChainSelect = document.querySelector('#chars-chain-select');
 
 const CANVAS_WIDTH = 300;
 
@@ -13,16 +12,16 @@ const chars = [
   "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~i!lI;:,\"^`'. ", // pesado
   "@%#*+=-:. ",
   " .:-=+*#%@Ñ",
-  "@.-+#%*=: ", // alto contraste, muito bom
+  "@.-+#%*=: ", // contraste alto, o melhor
+  "@ %.#:*-+=", // contraste altissimo, não tão bom
   "▉▊▋▍▎▏",
   "▏▎▍▋▊▉",
   "▂▃▅▆▇",
   "▇▆▅▃▂_",
   " ░▒▓█",
-  "●◍",
 ];
 
-let charsChain = " ░▒▓█";
+let charsChain = "@.-+#%*=: ";
 let nColors = charsChain.length;
 let bkPoints = [];
 
@@ -50,37 +49,12 @@ function calcBreakpoints() {
   bkPoints = newBkPoints;
 }
 
-function setSelectOptions() {
-  // clear select options
-  charsChainSelect.innerHTML = '';
-
-  // set values
-  chars.forEach(chain => {
-    const option = document.createElement('option');
-    option.value = chain;
-    option.innerText = chain;
-    charsChainSelect.appendChild(option);
-  });
-
-  // set initial value
-  charsChainSelect.value = charsChain;
-}
-
-function handleOnSelectChange() {
-  charsChain = charsChainSelect.value;
-  nColors = charsChain.length;
-  setInitialValues();
-}
-charsChainSelect.addEventListener('change', handleOnSelectChange);
-
-
 btn.addEventListener('click', () => {
   const ctx = canvas.getContext('2d');
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const newImgData = grayscaleNColors(imgData);
   asciiDiv.innerHTML = asciiArt(newImgData);
 });
-
 
 //
 function grayscaleNColors(imgData) {
